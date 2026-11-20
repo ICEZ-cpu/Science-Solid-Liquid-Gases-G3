@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 5: Solids, Liquids & Gases — Fun Science Lab!</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load Google Fonts: Fredoka (playful headings) & Nunito (readable body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Custom Typography & Theme Styles */
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f0f9ff;
+      background-image: radial-gradient(#bae6fd 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-comic {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* Comic Book Card & Button Styling */
+    .comic-card {
+      border: 3px solid #1e293b;
+      box-shadow: 6px 6px 0px #1e293b;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .comic-card-sm {
+      border: 2.5px solid #1e293b;
+      box-shadow: 4px 4px 0px #1e293b;
+    }
+
+    .comic-btn {
+      border: 2.5px solid #1e293b;
+      box-shadow: 4px 4px 0px #1e293b;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .comic-btn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #1e293b;
+    }
+
+    .comic-btn:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #1e293b;
+    }
+
+    /* Keyframe Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes steamRise {
+      0% { transform: translateY(0) scale(0.9); opacity: 0.8; }
+      50% { transform: translateY(-12px) scale(1.05); opacity: 0.5; }
+      100% { transform: translateY(-24px) scale(1.2); opacity: 0; }
+    }
+
+    @keyframes bubblePop {
+      0% { transform: translateY(0) scale(0.8); opacity: 0.9; }
+      100% { transform: translateY(-28px) scale(1.2); opacity: 0; }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-4deg); }
+      75% { transform: rotate(4deg); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+
+    .animate-steam {
+      animation: steamRise 2.4s ease-out infinite;
+    }
+
+    .animate-steam-delay {
+      animation: steamRise 2.4s ease-out 1.2s infinite;
+    }
+
+    .animate-bubble {
+      animation: bubblePop 2s ease-in infinite;
+    }
+
+    .animate-wobble {
+      animation: wobble 0.4s ease-in-out;
+    }
+
+    .animate-pop {
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Interactive Hotspot Pulse */
+    .hotspot-btn {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .hotspot-btn:hover {
+      transform: scale(1.12);
+    }
+
+    /* Tab Active State */
+    .nav-tab.active {
+      background-color: #facc15;
+      color: #1e293b;
+      transform: translateY(-2px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #e0f2fe;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #38bdf8;
+      border-radius: 9999px;
+      border: 2px solid #1e293b;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Confetti Canvas for Celebrations -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Floating Sound-Effect Toast Popup -->
+  <div id="sfx-popup" class="fixed top-20 right-4 z-40 hidden pointer-events-none">
+    <div id="sfx-badge" class="comic-card-sm bg-yellow-300 text-slate-900 font-comic text-xl px-4 py-2 rounded-2xl transform rotate-3">
+      BOING! 🎉
+    </div>
+  </div>
+
+  <!-- Top Header Banner -->
+  <header class="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 text-white border-b-4 border-slate-900 sticky top-0 z-30 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <!-- IMPROVE Brand Logo Badge with Fallback -->
+        <div class="bg-white px-2.5 py-1.5 rounded-2xl border-2 border-slate-900 shadow-sm flex items-center gap-2 shrink-0">
+          <img
+            src="Sujato andika nanda (7).png"
+            alt="IMPROVE Logo"
+            class="h-8 sm:h-10 w-auto object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+          />
+          <span class="hidden font-comic font-extrabold text-slate-900 text-sm sm:text-base tracking-wide">
+            ↗ IMPROVE
+          </span>
+        </div>
+
+        <div class="bg-yellow-300 text-slate-900 font-comic font-bold px-2.5 py-1 rounded-xl border-2 border-slate-900 shadow-sm text-xs sm:text-sm">
+          CH. 5
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-wide drop-shadow">
+            Solids, Liquids &amp; Gases! 🧪
+          </h1>
+          <p class="text-xs sm:text-sm text-sky-100 font-semibold">
+            Interactive Science Adventure • <span class="text-yellow-200 font-bold">Make by : Sujato Andika Nanda, PC®</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Score & Progress Pill -->
+      <div class="flex items-center gap-3 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-2xl border-2 border-white/40">
+        <span class="text-sm font-bold">⭐ Explorer Points:</span>
+        <span id="global-score" class="bg-yellow-300 text-slate-900 font-comic font-bold px-2.5 py-0.5 rounded-lg border-2 border-slate-900 text-base">
+          0
+        </span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-sky-900/40 border-t-2 border-slate-900/30">
+      <div class="max-w-6xl mx-auto px-3 py-2 flex overflow-x-auto gap-2 no-scrollbar">
+        <button onclick="switchSection('theater')" id="tab-theater" class="nav-tab active comic-btn bg-white text-slate-800 font-comic text-sm sm:text-base px-3.5 py-1.5 rounded-xl whitespace-nowrap">
+          🎬 1. Story &amp; Video
+        </button>
+        <button onclick="switchSection('kitchen')" id="tab-kitchen" class="nav-tab comic-btn bg-white text-slate-800 font-comic text-sm sm:text-base px-3.5 py-1.5 rounded-xl whitespace-nowrap">
+          🍳 2. Kitchen Explorer
+        </button>
+        <button onclick="switchSection('shapelab')" id="tab-shapelab" class="nav-tab comic-btn bg-white text-slate-800 font-comic text-sm sm:text-base px-3.5 py-1.5 rounded-xl whitespace-nowrap">
+          🫗 3. Shape &amp; Flow Lab
+        </button>
+        <button onclick="switchSection('volumelab')" id="tab-volumelab" class="nav-tab comic-btn bg-white text-slate-800 font-comic text-sm sm:text-base px-3.5 py-1.5 rounded-xl whitespace-nowrap">
+          💉 4. Syringe Squeeze Lab
+        </button>
+        <button onclick="switchSection('mindmap')" id="tab-mindmap" class="nav-tab comic-btn bg-white text-slate-800 font-comic text-sm sm:text-base px-3.5 py-1.5 rounded-xl whitespace-nowrap">
+          🕵️ 5. Crack the Case
+        </button>
+        <button onclick="switchSection('quiz')" id="tab-quiz" class="nav-tab comic-btn bg-emerald-300 text-slate-900 font-comic text-sm sm:text-base px-3.5 py-1.5 rounded-xl whitespace-nowrap">
+          🏆 6. Super Quiz!
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6 sm:py-8">
+
+    <!-- ========================================================= -->
+    <!-- SECTION 1: STORY & VIDEO THEATER (Vera & Tim's Challenge) -->
+    <!-- ========================================================= -->
+    <section id="sec-theater" class="space-y-6 animate-pop">
+      <!-- Learning Objectives Banner -->
+      <div class="comic-card bg-amber-100 rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <span class="inline-block bg-amber-400 text-slate-900 font-comic text-xs uppercase tracking-wider px-3 py-1 rounded-full border-2 border-slate-900 mb-2">
+              🎯 What Will I Learn?
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">
+              Welcome to the World of Matter!
+            </h2>
+            <ul class="mt-2 space-y-1.5 text-slate-800 font-semibold text-sm sm:text-base">
+              <li class="flex items-center gap-2">
+                <span class="bg-emerald-400 text-slate-900 rounded-md px-1.5 font-bold border border-slate-900">✓</span>
+                Identify and classify materials as <strong>solids, liquids, or gases</strong>.
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="bg-emerald-400 text-slate-900 rounded-md px-1.5 font-bold border border-slate-900">✓</span>
+                Describe the properties of solids and liquids (shape, flow, and volume) and their differences!
+              </li>
+            </ul>
+          </div>
+          <!-- Clues Dictionary Card -->
+          <div class="comic-card-sm bg-white rounded-2xl p-4 w-full md:w-72 shrink-0">
+            <div class="flex items-center gap-2 text-indigo-700 font-comic font-bold text-lg border-b-2 border-slate-200 pb-1 mb-2">
+              <span>🔑</span> Science Clues!
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              <strong>Matter:</strong> Anything that has mass and occupies space.<br />
+              <strong>Occupies:</strong> Takes up space.<br />
+              <strong>Heap:</strong> A pile of something.<br />
+              <strong>Flow:</strong> To move continuously in a stream.<br />
+              <strong>Compress:</strong> To squeeze something to reduce its volume.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Animated Story Theater -->
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <span class="bg-purple-200 text-purple-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+              🎬 INTERACTIVE ANIMATED STORY
+            </span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+              Vera &amp; Tim’s Great Jug-Filling Competition!
+            </h3>
+          </div>
+          <!-- Story Scene Controls -->
+          <div class="flex items-center gap-2">
+            <button onclick="prevStorySlide()" class="comic-btn bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl font-comic text-sm">
+              ◀ Prev
+            </button>
+            <button id="story-play-btn" onclick="toggleStoryAutoPlay()" class="comic-btn bg-yellow-300 hover:bg-yellow-400 px-4 py-1.5 rounded-xl font-comic text-sm">
+              ▶ Auto-Play Story
+            </button>
+            <button onclick="nextStorySlide()" class="comic-btn bg-sky-300 hover:bg-sky-400 px-3 py-1.5 rounded-xl font-comic text-sm">
+              Next ▶
+            </button>
+          </div>
+        </div>
+
+        <!-- Animated SVG Stage -->
+        <div class="relative bg-gradient-to-b from-sky-200 via-sky-100 to-emerald-200 rounded-2xl border-3 border-slate-900 overflow-hidden p-4">
+          <!-- Step Indicator Pills -->
+          <div class="flex justify-center gap-2 mb-3">
+            <button onclick="setStorySlide(0)" id="dot-0" class="w-8 h-3 rounded-full border-2 border-slate-900 bg-yellow-400 transition-all"></button>
+            <button onclick="setStorySlide(1)" id="dot-1" class="w-8 h-3 rounded-full border-2 border-slate-900 bg-white transition-all"></button>
+            <button onclick="setStorySlide(2)" id="dot-2" class="w-8 h-3 rounded-full border-2 border-slate-900 bg-white transition-all"></button>
+            <button onclick="setStorySlide(3)" id="dot-3" class="w-8 h-3 rounded-full border-2 border-slate-900 bg-white transition-all"></button>
+          </div>
+
+          <!-- Detailed Comic SVG Illustration -->
+          <div class="w-full max-w-3xl mx-auto">
+            <svg id="story-svg" viewBox="0 0 800 340" class="w-full h-auto rounded-xl bg-white/60 border-2 border-slate-800 shadow-inner">
+              <!-- Sky & Sun -->
+              <circle cx="720" cy="55" r="32" fill="#fde047" stroke="#1e293b" stroke-width="3" />
+              <!-- Clouds -->
+              <g fill="#ffffff" stroke="#1e293b" stroke-width="2.5">
+                <path d="M110,65 Q120,40 145,45 Q165,30 185,50 Q205,50 200,70 Q195,82 115,80 Q95,78 110,65 Z" />
+                <path d="M480,55 Q490,35 512,40 Q530,28 545,45 Q560,45 556,62 Q550,72 485,70 Q470,68 480,55 Z" />
+              </g>
+              <!-- Garden Fence & Bushes -->
+              <rect x="0" y="210" width="800" height="130" fill="#86efac" stroke="#1e293b" stroke-width="2.5" />
+              <g fill="#d97706" stroke="#1e293b" stroke-width="2">
+                <rect x="20" y="155" width="18" height="65" rx="3" />
+                <rect x="50" y="155" width="18" height="65" rx="3" />
+                <rect x="80" y="155" width="18" height="65" rx="3" />
+                <rect x="110" y="155" width="18" height="65" rx="3" />
+                <rect x="680" y="155" width="18" height="65" rx="3" />
+                <rect x="710" y="155" width="18" height="65" rx="3" />
+                <rect x="740" y="155" width="18" height="65" rx="3" />
+                <rect x="15" y="175" width="120" height="10" />
+                <rect x="675" y="175" width="90" height="10" />
+              </g>
+
+              <!-- VERA (Left Character) -->
+              <g id="vera-group" transform="translate(170, 125)">
+                <!-- Hair & Bow -->
+                <circle cx="45" cy="45" r="34" fill="#1e293b" />
+                <path d="M25,20 L10,8 L22,28 Z" fill="#f43f5e" stroke="#1e293b" stroke-width="2" />
+                <path d="M65,20 L80,8 L68,28 Z" fill="#f43f5e" stroke="#1e293b" stroke-width="2" />
+                <circle cx="45" cy="20" r="6" fill="#fb7185" stroke="#1e293b" stroke-width="2" />
+                <!-- Face -->
+                <circle cx="45" cy="50" r="26" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5" />
+                <!-- Eyes & Smile -->
+                <circle cx="36" cy="47" r="4" fill="#1e293b" />
+                <circle cx="54" cy="47" r="4" fill="#1e293b" />
+                <circle cx="37" cy="46" r="1.5" fill="#ffffff" />
+                <circle cx="55" cy="46" r="1.5" fill="#ffffff" />
+                <path id="vera-mouth" d="M36,59 Q45,69 54,59" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+                <!-- Dress -->
+                <path d="M25,78 L65,78 L75,135 L15,135 Z" fill="#f43f5e" stroke="#1e293b" stroke-width="2.5" />
+                <text x="45" y="112" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="14">VERA</text>
+              </g>
+
+              <!-- VERA'S JUG (With Rocks & Gaps!) -->
+              <g id="vera-jug" transform="translate(275, 175)">
+                <!-- Jug Body -->
+                <rect x="0" y="10" width="70" height="90" rx="8" fill="#e0f2fe" fill-opacity="0.8" stroke="#1e293b" stroke-width="3" />
+                <path d="M70,25 Q90,25 90,50 Q90,75 70,75" fill="none" stroke="#1e293b" stroke-width="4" />
+                <!-- Rocks inside Vera's Jug (Notice the AIR GAPS between rocks!) -->
+                <g id="vera-rocks">
+                  <ellipse cx="22" cy="85" rx="16" ry="12" fill="#94a3b8" stroke="#1e293b" stroke-width="2" />
+                  <ellipse cx="50" cy="84" rx="15" ry="13" fill="#64748b" stroke="#1e293b" stroke-width="2" />
+                  <ellipse cx="34" cy="64" rx="17" ry="11" fill="#cbd5e1" stroke="#1e293b" stroke-width="2" />
+                  <ellipse cx="20" cy="44" rx="14" ry="12" fill="#64748b" stroke="#1e293b" stroke-width="2" />
+                  <ellipse cx="48" cy="45" rx="16" ry="12" fill="#94a3b8" stroke="#1e293b" stroke-width="2" />
+                  <ellipse cx="35" cy="24" rx="15" ry="11" fill="#cbd5e1" stroke="#1e293b" stroke-width="2" />
+                </g>
+                <!-- Gap Highlights (Shown in Scene 2 & 3) -->
+                <g id="gap-highlights" opacity="0">
+                  <circle cx="35" cy="76" r="5" fill="#facc15" stroke="#dc2626" stroke-width="2" />
+                  <circle cx="15" cy="64" r="5" fill="#facc15" stroke="#dc2626" stroke-width="2" />
+                  <circle cx="55" cy="62" r="5" fill="#facc15" stroke="#dc2626" stroke-width="2" />
+                  <circle cx="35" cy="44" r="5" fill="#facc15" stroke="#dc2626" stroke-width="2" />
+                  <text x="35" y="118" text-anchor="middle" fill="#dc2626" font-family="Fredoka" font-weight="bold" font-size="13">GAPS! ❌</text>
+                </g>
+              </g>
+
+              <!-- TIM (Right Character) -->
+              <g id="tim-group" transform="translate(550, 125)">
+                <!-- Hair -->
+                <path d="M18,45 Q20,12 45,12 Q70,12 72,45 Z" fill="#1e293b" />
+                <!-- Face -->
+                <circle cx="45" cy="50" r="26" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5" />
+                <!-- Glasses -->
+                <circle cx="35" cy="48" r="9" fill="#ffffff" fill-opacity="0.6" stroke="#1e293b" stroke-width="2.5" />
+                <circle cx="55" cy="48" r="9" fill="#ffffff" fill-opacity="0.6" stroke="#1e293b" stroke-width="2.5" />
+                <line x1="44" y1="48" x2="46" y2="48" stroke="#1e293b" stroke-width="2.5" />
+                <circle cx="35" cy="48" r="3" fill="#1e293b" />
+                <circle cx="55" cy="48" r="3" fill="#1e293b" />
+                <!-- Smile -->
+                <path d="M37,61 Q45,69 53,61" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+                <!-- Shirt -->
+                <path d="M25,78 L65,78 L72,135 L18,135 Z" fill="#2563eb" stroke="#1e293b" stroke-width="2.5" />
+                <text x="45" y="112" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="14">TIM</text>
+              </g>
+
+              <!-- TIM'S JUG (Filled to the brim with Water!) -->
+              <g id="tim-jug" transform="translate(445, 175)">
+                <!-- Jug Body -->
+                <rect x="0" y="10" width="70" height="90" rx="8" fill="#e0f2fe" stroke="#1e293b" stroke-width="3" />
+                <path d="M0,25 Q-20,25 -20,50 Q-20,75 0,75" fill="none" stroke="#1e293b" stroke-width="4" />
+                <!-- Water Level (Animated height) -->
+                <rect id="tim-water" x="3" y="14" width="64" height="83" rx="5" fill="#38bdf8" />
+                <!-- Sparkles on Water -->
+                <text id="tim-win-badge" x="35" y="118" text-anchor="middle" fill="#059669" font-family="Fredoka" font-weight="bold" font-size="13" opacity="0">NO GAPS! 🏆</text>
+              </g>
+
+              <!-- Speech Bubble Overlay -->
+              <g id="story-bubble" transform="translate(190, 20)">
+                <rect x="0" y="0" width="420" height="72" rx="18" fill="#ffffff" stroke="#1e293b" stroke-width="3" />
+                <text id="bubble-speaker" x="210" y="25" text-anchor="middle" fill="#4f46e5" font-family="Fredoka" font-weight="bold" font-size="15">
+                  SCENE 1: THE CHALLENGE!
+                </text>
+                <text id="bubble-line1" x="210" y="45" text-anchor="middle" fill="#1e293b" font-family="Nunito" font-weight="700" font-size="13.5">
+                  "Rocks are big! They should help me fill up the whole jug quickly!"
+                </text>
+                <text id="bubble-line2" x="210" y="62" text-anchor="middle" fill="#475569" font-family="Nunito" font-weight="600" font-size="12.5">
+                  Vera fills her jug with garden rocks...
+                </text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Story Caption & Quick Question -->
+          <div class="mt-4 bg-white rounded-2xl border-2 border-slate-900 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p id="story-narration" class="text-slate-800 font-bold text-sm sm:text-base">
+              🎬 <strong>Scene 1 of 4:</strong> Vera and Tim compete to fill a jug completely with NO gaps using things from the school garden!
+            </p>
+            <button onclick="nextStorySlide()" class="comic-btn bg-emerald-400 hover:bg-emerald-500 text-slate-900 font-comic px-4 py-2 rounded-xl text-sm shrink-0">
+              Continue Story ➔
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Educational Video Corner (With Safe Embed & Fallback) -->
+      <div class="comic-card bg-indigo-50 rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="space-y-3 flex-1">
+            <span class="bg-rose-500 text-white font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+              📺 SCIENCE VIDEO CORNER
+            </span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">
+              Watch &amp; Learn: States of Matter for Kids!
+            </h3>
+            <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
+              Want to see real-life examples of <strong>Solids, Liquids, and Gases</strong> in action? Watch this fun science explainer video or explore our interactive labs right below!
+            </p>
+            <div class="bg-white p-3 rounded-xl border-2 border-slate-900 text-xs sm:text-sm text-slate-700">
+              💡 <strong>Teacher Tip:</strong> Notice how ice (solid) keeps its cube shape, water (liquid) splashes and flows, and steam (gas) floats up into the air!
+            </div>
+          </div>
+
+          <!-- Responsive Video Player Box -->
+          <div class="w-full md:w-96 shrink-0">
+            <div class="comic-card-sm bg-slate-900 rounded-2xl overflow-hidden aspect-video relative">
+              <iframe
+                class="w-full h-full"
+                src="https://www.youtube.com/embed/wclY8F-UoTE"
+                title="States of Matter - Solids, Liquids and Gases"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <p class="text-center text-xs text-slate-600 mt-2 font-semibold">
+              Video: "States of Matter" — Educational Science Clip
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 2: INTERACTIVE KITCHEN EXPLORER (Page 65)         -->
+    <!-- ========================================================= -->
+    <section id="sec-kitchen" class="hidden space-y-6 animate-pop">
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <span class="bg-sky-300 text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+              🔍 LESSON 1: MATTER AROUND US
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+              Click Everything in Tim’s Kitchen! 🍳
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base font-semibold">
+              "The materials around us are called <strong>matter</strong>. Tap the glowing badges in the kitchen to classify them!"
+            </p>
+          </div>
+          <div class="bg-amber-100 border-2 border-slate-900 px-4 py-2 rounded-2xl font-comic text-sm sm:text-base">
+            Discovered: <span id="kitchen-count" class="text-indigo-700 font-bold">0</span> / 7 Items
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <!-- Detailed Illustrated Kitchen SVG (2 columns wide) -->
+          <div class="lg:col-span-2 bg-amber-50 rounded-2xl border-3 border-slate-900 p-3 relative overflow-hidden">
+            <svg viewBox="0 0 700 440" class="w-full h-auto rounded-xl bg-amber-100/70 border-2 border-slate-800">
+              <!-- Kitchen Wall & Window -->
+              <rect x="0" y="0" width="700" height="310" fill="#fef3c7" />
+              <!-- Window -->
+              <rect x="270" y="30" width="140" height="120" rx="6" fill="#bae6fd" stroke="#1e293b" stroke-width="3" />
+              <line x1="340" y1="30" x2="340" y2="150" stroke="#1e293b" stroke-width="3" />
+              <line x1="270" y1="90" x2="410" y2="90" stroke="#1e293b" stroke-width="3" />
+
+              <!-- Upper Cabinets -->
+              <rect x="30" y="25" width="190" height="95" rx="6" fill="#d97706" stroke="#1e293b" stroke-width="3" />
+              <line x1="125" y1="25" x2="125" y2="120" stroke="#1e293b" stroke-width="2.5" />
+              <circle cx="115" cy="75" r="4" fill="#fef08a" />
+              <circle cx="135" cy="75" r="4" fill="#fef08a" />
+
+              <!-- Kitchen Counter & Stove -->
+              <rect x="20" y="230" width="430" height="140" fill="#92400e" stroke="#1e293b" stroke-width="3" />
+              <rect x="15" y="220" width="440" height="16" rx="4" fill="#e2e8f0" stroke="#1e293b" stroke-width="3" />
+              <!-- Stove Front -->
+              <rect x="55" y="245" width="140" height="115" rx="4" fill="#f8fafc" stroke="#1e293b" stroke-width="2.5" />
+              <rect x="70" y="275" width="110" height="65" rx="4" fill="#334155" stroke="#1e293b" stroke-width="2" />
+              <!-- Stove Knobs -->
+              <circle cx="75" cy="258" r="5" fill="#ef4444" />
+              <circle cx="95" cy="258" r="5" fill="#1e293b" />
+              <circle cx="115" cy="258" r="5" fill="#1e293b" />
+              <circle cx="135" cy="258" r="5" fill="#1e293b" />
+
+              <!-- 1. STEAM (Gas) rising from pot -->
+              <g class="animate-steam">
+                <path d="M105,155 Q95,135 110,120 Q125,105 110,90" fill="none" stroke="#94a3b8" stroke-width="5" stroke-linecap="round" />
+                <path d="M135,155 Q150,135 135,115 Q120,95 140,80" fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" />
+              </g>
+
+              <!-- 2. COOKING POT WITH SOUP & MUSHROOMS -->
+              <g transform="translate(75, 165)">
+                <!-- Pot -->
+                <rect x="10" y="15" width="85" height="42" rx="6" fill="#64748b" stroke="#1e293b" stroke-width="3" />
+                <!-- Soup Liquid Surface -->
+                <ellipse cx="52" cy="16" rx="41" ry="9" fill="#f97316" stroke="#1e293b" stroke-width="2" />
+                <!-- Mushrooms in Soup -->
+                <path d="M32,16 Q32,7 41,7 Q50,7 50,16 Z" fill="#fef3c7" stroke="#1e293b" stroke-width="1.8" />
+                <rect x="39" y="15" width="4" height="5" fill="#fde68a" />
+                <path d="M58,17 Q58,9 66,9 Q74,9 74,17 Z" fill="#fef3c7" stroke="#1e293b" stroke-width="1.8" />
+              </g>
+
+              <!-- 3. WOODEN CHOPPING BOARD (Solid) on Counter -->
+              <g transform="translate(225, 198)">
+                <rect x="0" y="8" width="75" height="16" rx="4" fill="#b45309" stroke="#1e293b" stroke-width="2.5" />
+                <rect x="75" y="12" width="18" height="8" rx="3" fill="#b45309" stroke="#1e293b" stroke-width="2" />
+              </g>
+
+              <!-- 4. GLASS OF WATER WITH AIR BUBBLES -->
+              <g transform="translate(345, 155)">
+                <polygon points="5,0 55,0 48,65 12,65" fill="#e0f2fe" fill-opacity="0.7" stroke="#1e293b" stroke-width="2.5" />
+                <polygon points="8,18 52,18 47,63 13,63" fill="#38bdf8" />
+                <!-- Rising Bubbles -->
+                <circle cx="24" cy="48" r="3" fill="#ffffff" class="animate-bubble" />
+                <circle cx="36" cy="40" r="3.5" fill="#ffffff" class="animate-bubble" />
+                <circle cx="28" cy="30" r="2.5" fill="#ffffff" class="animate-bubble" />
+              </g>
+
+              <!-- 5. FRIDGE (Right Side) -->
+              <g transform="translate(475, 45)">
+                <rect x="0" y="0" width="195" height="325" rx="12" fill="#f1f5f9" stroke="#1e293b" stroke-width="3.5" />
+                <!-- Open Freezer Compartment -->
+                <rect x="12" y="14" width="170" height="85" rx="6" fill="#bae6fd" stroke="#1e293b" stroke-width="2.5" />
+                <!-- Ice Cube Tray & Ice Cubes -->
+                <rect x="30" y="55" width="65" height="28" rx="4" fill="#e0f2fe" stroke="#1e293b" stroke-width="2" />
+                <rect x="36" y="46" width="16" height="16" rx="3" fill="#7dd3fc" stroke="#1e293b" stroke-width="2" />
+                <rect x="56" y="46" width="16" height="16" rx="3" fill="#7dd3fc" stroke="#1e293b" stroke-width="2" />
+                <rect x="76" y="46" width="16" height="16" rx="3" fill="#7dd3fc" stroke="#1e293b" stroke-width="2" />
+                <!-- Fridge Lower Compartment -->
+                <rect x="12" y="112" width="170" height="195" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="2.5" />
+                <line x1="12" y1="175" x2="182" y2="175" stroke="#94a3b8" stroke-width="3" />
+                <line x1="12" y1="240" x2="182" y2="240" stroke="#94a3b8" stroke-width="3" />
+                <!-- Milk Carton inside Fridge -->
+                <rect x="35" y="122" width="34" height="50" rx="3" fill="#3b82f6" stroke="#1e293b" stroke-width="2" />
+                <polygon points="35,122 52,110 69,122" fill="#93c5fd" stroke="#1e293b" stroke-width="2" />
+                <text x="52" y="152" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-size="9">MILK</text>
+              </g>
+
+              <!-- Floor -->
+              <rect x="0" y="370" width="700" height="70" fill="#fde68a" stroke="#1e293b" stroke-width="3" />
+
+              <!-- CLICKABLE HOTSPOT BUTTONS -->
+              <!-- Hotspot 1: Steam -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('steam')">
+                <rect x="125" y="95" width="74" height="28" rx="14" fill="#c084fc" stroke="#1e293b" stroke-width="2.5" />
+                <text x="162" y="114" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">💨 Steam</text>
+              </g>
+
+              <!-- Hotspot 2: Mushrooms -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('mushrooms')">
+                <rect x="15" y="142" width="102" height="28" rx="14" fill="#fbbf24" stroke="#1e293b" stroke-width="2.5" />
+                <text x="66" y="161" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">🍄 Mushrooms</text>
+              </g>
+
+              <!-- Hotspot 3: Soup -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('soup')">
+                <rect x="20" y="185" width="68" height="28" rx="14" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                <text x="54" y="204" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">🍲 Soup</text>
+              </g>
+
+              <!-- Hotspot 4: Chopping Board -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('board')">
+                <rect x="215" y="165" width="95" height="28" rx="14" fill="#fbbf24" stroke="#1e293b" stroke-width="2.5" />
+                <text x="262" y="184" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">🪵 Board</text>
+              </g>
+
+              <!-- Hotspot 5: Air Bubbles -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('bubbles')">
+                <rect x="330" y="120" width="98" height="28" rx="14" fill="#c084fc" stroke="#1e293b" stroke-width="2.5" />
+                <text x="379" y="139" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">🫧 Bubbles</text>
+              </g>
+
+              <!-- Hotspot 6: Water -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('water')">
+                <rect x="385" y="185" width="76" height="28" rx="14" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                <text x="423" y="204" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">💧 Water</text>
+              </g>
+
+              <!-- Hotspot 7: Ice Cube -->
+              <g class="hotspot-btn" onclick="inspectKitchenItem('ice')">
+                <rect x="555" y="65" width="90" height="28" rx="14" fill="#fbbf24" stroke="#1e293b" stroke-width="2.5" />
+                <text x="600" y="84" text-anchor="middle" fill="#1e293b" font-family="Fredoka" font-weight="bold" font-size="13">🧊 Ice Cube</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Explanation Card Panel -->
+          <div class="space-y-4">
+            <div id="kitchen-inspector-card" class="comic-card-sm bg-sky-100 rounded-2xl p-5 min-h-[250px] flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span id="ki-badge" class="bg-white text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+                    👆 TAP AN ITEM
+                  </span>
+                  <span id="ki-emoji" class="text-4xl">🔎</span>
+                </div>
+                <h3 id="ki-title" class="text-xl font-bold text-slate-900 mt-2">
+                  Look around the kitchen!
+                </h3>
+                <p id="ki-desc" class="text-slate-700 text-sm sm:text-base mt-2 leading-relaxed">
+                  Click any colorful badge in the kitchen illustration on the left to see whether it is a <strong>Solid</strong>, <strong>Liquid</strong>, or <strong>Gas</strong> — and why!
+                </p>
+              </div>
+              <div id="ki-funfact" class="mt-4 bg-white/80 rounded-xl p-3 border-2 border-slate-900 text-xs sm:text-sm font-bold text-indigo-800">
+                🤓 Remember: Matter is anything that has mass and occupies (takes up) space!
+              </div>
+            </div>
+
+            <!-- 3 States Quick Legend -->
+            <div class="comic-card-sm bg-white rounded-2xl p-4 space-y-2">
+              <h4 class="font-comic font-bold text-slate-900 text-base">The 3 States of Matter:</h4>
+              <div class="flex items-center gap-2 text-sm font-bold">
+                <span class="w-4 h-4 rounded bg-amber-400 border border-slate-900 inline-block"></span>
+                <span>Solids (e.g., Ice cube, Mushrooms)</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm font-bold">
+                <span class="w-4 h-4 rounded bg-sky-400 border border-slate-900 inline-block"></span>
+                <span>Liquids (e.g., Soup, Water, Milk)</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm font-bold">
+                <span class="w-4 h-4 rounded bg-purple-400 border border-slate-900 inline-block"></span>
+                <span>Gases (e.g., Steam, Air bubbles)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 3: SHAPE & FLOW CONTAINER LAB (Pages 66-68, 71)   -->
+    <!-- ========================================================= -->
+    <section id="sec-shapelab" class="hidden space-y-6 animate-pop">
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6">
+        <span class="bg-emerald-300 text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+          🧪 LESSON 2: PROPERTIES OF SOLIDS &amp; LIQUIDS
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+          Let’s Investigate: Shape &amp; Flow Lab! 🫗
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base font-semibold">
+          <strong>Aim:</strong> To find out if solids and liquids have a <strong>fixed shape</strong> and whether they can <strong>flow</strong>!
+        </p>
+
+        <!-- Interactive Lab Controls -->
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <!-- Left: Controls -->
+          <div class="space-y-4 bg-slate-50 p-4 rounded-2xl border-2 border-slate-900">
+            <div>
+              <label class="font-comic font-bold text-slate-800 block mb-2">Step 1: Choose Material to Pour</label>
+              <div class="grid grid-cols-2 gap-3">
+                <button onclick="setLabMaterial('ice')" id="btn-mat-ice" class="comic-btn bg-amber-300 font-comic py-2.5 px-3 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
+                  🧊 Ice Cubes (Solid)
+                </button>
+                <button onclick="setLabMaterial('water')" id="btn-mat-water" class="comic-btn bg-white font-comic py-2.5 px-3 rounded-xl text-sm sm:text-base flex items-center justify-center gap-2">
+                  💧 Water (Liquid)
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="font-comic font-bold text-slate-800 block mb-2">Step 2: Choose Container Shape</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="setLabContainer('beaker')" id="btn-cont-beaker" class="comic-btn bg-sky-300 font-comic py-2 px-2 rounded-xl text-xs sm:text-sm">
+                  🥛 Tall Beaker
+                </button>
+                <button onclick="setLabContainer('flask')" id="btn-cont-flask" class="comic-btn bg-white font-comic py-2 px-2 rounded-xl text-xs sm:text-sm">
+                  ⚗️ Cone Flask
+                </button>
+                <button onclick="setLabContainer('tilted')" id="btn-cont-tilted" class="comic-btn bg-white font-comic py-2 px-2 rounded-xl text-xs sm:text-sm">
+                  📐 Tilted Glass
+                </button>
+              </div>
+            </div>
+
+            <!-- Observation Box -->
+            <div id="lab-observation" class="bg-yellow-100 border-2 border-slate-900 rounded-xl p-4 space-y-1.5">
+              <h4 class="font-comic font-bold text-slate-900 text-base">🔬 What Do You Observe?</h4>
+              <p id="lab-obs-text" class="text-sm text-slate-800 font-semibold leading-relaxed">
+                Ice cubes keep their <strong>cube shape</strong>! They stack on top of one another to form a <strong>heap</strong>, leaving gaps in the beaker. Solids <strong>cannot flow</strong>!
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Live Animated Container SVG -->
+          <div class="bg-gradient-to-b from-sky-100 to-indigo-100 rounded-2xl border-3 border-slate-900 p-4 flex flex-col items-center justify-center">
+            <svg id="container-lab-svg" viewBox="0 0 360 270" class="w-full max-w-sm h-auto bg-white rounded-xl border-2 border-slate-800 shadow-inner">
+              <!-- Table surface -->
+              <rect x="0" y="235" width="360" height="35" fill="#cbd5e1" stroke="#1e293b" stroke-width="2" />
+
+              <!-- Container 1: Tall Beaker -->
+              <g id="view-beaker">
+                <!-- Beaker outline -->
+                <path d="M120,45 L120,225 Q120,235 130,235 L230,235 Q240,235 240,225 L240,45" fill="#f8fafc" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
+                <!-- Measurement lines -->
+                <line x1="120" y1="95" x2="138" y2="95" stroke="#64748b" stroke-width="2" />
+                <line x1="120" y1="140" x2="138" y2="140" stroke="#64748b" stroke-width="2" />
+                <line x1="120" y1="185" x2="138" y2="185" stroke="#64748b" stroke-width="2" />
+
+                <!-- Ice Cubes inside Beaker (Heap with gaps!) -->
+                <g id="beaker-ice">
+                  <rect x="128" y="190" width="42" height="40" rx="6" fill="#7dd3fc" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="182" y="190" width="42" height="40" rx="6" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="135" y="146" width="42" height="40" rx="6" transform="rotate(-6 156 166)" fill="#bae6fd" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="185" y="146" width="42" height="40" rx="6" transform="rotate(8 206 166)" fill="#7dd3fc" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="158" y="103" width="42" height="40" rx="6" transform="rotate(-3 179 123)" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                </g>
+
+                <!-- Water inside Beaker (Takes exact shape, no gaps!) -->
+                <g id="beaker-water" class="hidden">
+                  <path d="M122,125 L238,125 L238,225 Q238,233 230,233 L130,233 Q122,233 122,225 Z" fill="#38bdf8" fill-opacity="0.85" />
+                  <ellipse cx="180" cy="125" rx="58" ry="6" fill="#7dd3fc" stroke="#0284c7" stroke-width="1.5" />
+                </g>
+              </g>
+
+              <!-- Container 2: Conical Flask -->
+              <g id="view-flask" class="hidden">
+                <!-- Water inside Flask -->
+                <g id="flask-water" class="hidden">
+                  <path d="M128,155 L232,155 L268,222 Q272,233 258,233 L102,233 Q88,233 92,222 Z" fill="#38bdf8" fill-opacity="0.85" />
+                  <ellipse cx="180" cy="155" rx="52" ry="5" fill="#7dd3fc" stroke="#0284c7" stroke-width="1.5" />
+                </g>
+                <!-- Ice Cubes inside Flask (Still cubes! Cannot fill narrow neck!) -->
+                <g id="flask-ice">
+                  <rect x="112" y="192" width="38" height="38" rx="5" fill="#7dd3fc" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="160" y="192" width="38" height="38" rx="5" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="206" y="192" width="38" height="38" rx="5" fill="#bae6fd" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="142" y="150" width="38" height="38" rx="5" transform="rotate(-5 161 169)" fill="#7dd3fc" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="184" y="150" width="38" height="38" rx="5" transform="rotate(6 203 169)" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                </g>
+                <!-- Flask outline -->
+                <path d="M155,40 L155,95 L92,222 Q86,235 102,235 L258,235 Q274,235 268,222 L205,95 L205,40" fill="none" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
+              </g>
+
+              <!-- Container 3: Tilted Glass (Think-Pair-Share p.68) -->
+              <g id="view-tilted" class="hidden">
+                <g transform="rotate(-22 180 180)">
+                  <!-- Glass Body -->
+                  <rect x="135" y="45" width="90" height="175" rx="8" fill="#f8fafc" stroke="#1e293b" stroke-width="4" />
+                  <!-- Ice inside Tilted Glass (Tilts with glass!) -->
+                  <g id="tilted-ice">
+                    <rect x="140" y="175" width="38" height="38" rx="5" fill="#7dd3fc" stroke="#1e293b" stroke-width="2.5" />
+                    <rect x="182" y="175" width="38" height="38" rx="5" fill="#38bdf8" stroke="#1e293b" stroke-width="2.5" />
+                    <rect x="155" y="135" width="38" height="38" rx="5" fill="#bae6fd" stroke="#1e293b" stroke-width="2.5" />
+                  </g>
+                </g>
+                <!-- Water inside Tilted Glass (Surface stays FLAT & HORIZONTAL!) -->
+                <g id="tilted-water" class="hidden">
+                  <path d="M118,132 L212,132 L233,183 L149,217 Z" fill="#38bdf8" fill-opacity="0.85" />
+                  <line x1="115" y1="132" x2="215" y2="132" stroke="#0284c7" stroke-width="3" />
+                  <text x="180" y="118" text-anchor="middle" fill="#0369a1" font-family="Fredoka" font-weight="bold" font-size="12">Water level stays FLAT! ↔️</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Conclusion Summary Strip (From Page 67) -->
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="comic-card-sm bg-amber-100 rounded-2xl p-4">
+            <h4 class="font-comic font-bold text-lg text-slate-900">🧊 Solid Conclusion:</h4>
+            <ul class="mt-1 text-sm font-bold text-slate-800 space-y-1">
+              <li>• The shape of a solid <span class="bg-amber-300 px-1.5 rounded border border-slate-900">is fixed</span>.</li>
+              <li>• Solids <span class="bg-amber-300 px-1.5 rounded border border-slate-900">cannot</span> flow when poured.</li>
+              <li>• Solids stack on top of each other to form a <strong>heap</strong> with gaps!</li>
+            </ul>
+          </div>
+          <div class="comic-card-sm bg-sky-100 rounded-2xl p-4">
+            <h4 class="font-comic font-bold text-lg text-slate-900">💧 Liquid Conclusion:</h4>
+            <ul class="mt-1 text-sm font-bold text-slate-800 space-y-1">
+              <li>• The shape of a liquid <span class="bg-sky-300 px-1.5 rounded border border-slate-900">changes to fit the container</span>.</li>
+              <li>• Liquids <span class="bg-sky-300 px-1.5 rounded border border-slate-900">can</span> flow when poured.</li>
+              <li>• When tilted, a liquid’s surface always stays flat (horizontal)!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- WATCH OUT! Soft Solids Card (Page 71) -->
+      <div class="comic-card bg-rose-100 rounded-3xl p-5 sm:p-6">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="flex-1 space-y-2">
+            <span class="bg-rose-500 text-white font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+              ⚠️ WATCH OUT! TRICKY QUESTION ALERT!
+            </span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">
+              Are Soft Bread &amp; Marshmallows Solids?! 🍞🍡
+            </h3>
+            <p class="text-slate-800 text-sm sm:text-base font-semibold leading-relaxed">
+              Some solids like glass bowls and wooden boards feel <strong>hard</strong>. Other solids like <strong>bread</strong> and <strong>marshmallows</strong> feel <strong>soft</strong>!
+            </p>
+            <div class="bg-white p-3.5 rounded-2xl border-2 border-slate-900 text-sm font-bold text-slate-900">
+              💡 <strong>Golden Rule:</strong> Solids, even soft ones, <strong>keep their shape</strong> if we do not apply force to them, and they <strong>cannot flow</strong>! We do NOT tell if an object is a solid by feeling whether it is hard or soft!
+            </div>
+          </div>
+
+          <!-- Ada & Bread Mini-Demo -->
+          <div class="comic-card-sm bg-white rounded-2xl p-4 w-full md:w-80 text-center space-y-3">
+            <div class="text-5xl">🍞 ➔ 🥣</div>
+            <p class="text-sm font-bold text-slate-800">
+              Ada placed a loaf of bread into three different bowls. Did the bread flow or change into a bowl shape?
+            </p>
+            <button onclick="revealBreadAnswer()" id="bread-btn" class="comic-btn bg-yellow-300 font-comic text-sm px-4 py-2 rounded-xl w-full">
+              Tap to Reveal Answer! 👇
+            </button>
+            <p id="bread-ans" class="hidden text-sm font-extrabold text-emerald-700 bg-emerald-100 p-2 rounded-xl border border-slate-900">
+              NO! Bread cannot flow and keeps its loaf shape — so Bread is a SOLID! ✅
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 4: SYRINGE SQUEEZE LAB (Volume & Compression p.69)-->
+    <!-- ========================================================= -->
+    <section id="sec-volumelab" class="hidden space-y-6 animate-pop">
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6">
+        <span class="bg-indigo-300 text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+          💉 LESSON 3: VOLUME &amp; COMPRESSION
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+          The Syringe Squeeze Challenge! 💪
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base font-semibold">
+          <strong>Volume</strong> is the amount of space an object occupies. Can you squeeze (<strong>compress</strong>) Ice or Water inside a closed syringe? Try pushing the plunger!
+        </p>
+
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Syringe 1: ICE (Solid) -->
+          <div class="comic-card-sm bg-amber-50 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+            <div>
+              <span class="bg-amber-300 text-slate-900 font-comic text-xs px-2.5 py-0.5 rounded-full border border-slate-900">
+                EXPERIMENT A: SOLID
+              </span>
+              <h3 class="text-xl font-bold text-slate-900 mt-1">Syringe Filled with Ice 🧊</h3>
+              <p class="text-xs sm:text-sm text-slate-700 font-semibold">
+                Water inside this syringe was frozen into solid ice. Push the plunger!
+              </p>
+            </div>
+
+            <!-- Interactive SVG Syringe (Ice) -->
+            <div class="bg-white rounded-xl border-2 border-slate-900 p-3">
+              <svg id="syringe-ice-svg" viewBox="0 0 340 110" class="w-full h-auto">
+                <!-- Plunger Handle & Rod (Animated) -->
+                <g id="plunger-ice">
+                  <rect x="15" y="30" width="12" height="50" rx="3" fill="#94a3b8" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="27" y="48" width="95" height="14" fill="#cbd5e1" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="118" y="33" width="12" height="44" rx="2" fill="#1e293b" />
+                </g>
+                <!-- Syringe Barrel -->
+                <rect x="115" y="28" width="165" height="54" rx="6" fill="#f8fafc" fill-opacity="0.5" stroke="#1e293b" stroke-width="3" />
+                <!-- Solid Ice inside Barrel -->
+                <rect x="131" y="31" width="146" height="48" rx="3" fill="#7dd3fc" stroke="#0284c7" stroke-width="2" />
+                <text x="204" y="60" text-anchor="middle" fill="#0f172a" font-family="Fredoka" font-weight="bold" font-size="14">SOLID ICE 🧊</text>
+                <!-- Tip & Finger blocking tip -->
+                <rect x="280" y="47" width="22" height="16" fill="#e2e8f0" stroke="#1e293b" stroke-width="2.5" />
+                <circle cx="314" cy="55" r="14" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5" />
+              </svg>
+            </div>
+
+            <div class="space-y-2">
+              <button onclick="squeezeSyringe('ice')" class="comic-btn bg-amber-400 hover:bg-amber-500 text-slate-900 font-comic w-full py-2.5 rounded-xl text-base">
+                👉 Push Ice Plunger!
+              </button>
+              <p id="ice-squeeze-msg" class="text-center text-sm font-bold text-slate-700 min-h-[40px]">
+                Click the button to try compressing the ice!
+              </p>
+            </div>
+          </div>
+
+          <!-- Syringe 2: WATER (Liquid) -->
+          <div class="comic-card-sm bg-sky-50 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+            <div>
+              <span class="bg-sky-300 text-slate-900 font-comic text-xs px-2.5 py-0.5 rounded-full border border-slate-900">
+                EXPERIMENT B: LIQUID
+              </span>
+              <h3 class="text-xl font-bold text-slate-900 mt-1">Syringe Filled with Water 💧</h3>
+              <p class="text-xs sm:text-sm text-slate-700 font-semibold">
+                Cover the tip with your finger so water can't escape. Push the plunger!
+              </p>
+            </div>
+
+            <!-- Interactive SVG Syringe (Water) -->
+            <div class="bg-white rounded-xl border-2 border-slate-900 p-3">
+              <svg id="syringe-water-svg" viewBox="0 0 340 110" class="w-full h-auto">
+                <!-- Plunger Handle & Rod -->
+                <g id="plunger-water">
+                  <rect x="15" y="30" width="12" height="50" rx="3" fill="#94a3b8" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="27" y="48" width="95" height="14" fill="#cbd5e1" stroke="#1e293b" stroke-width="2.5" />
+                  <rect x="118" y="33" width="12" height="44" rx="2" fill="#1e293b" />
+                </g>
+                <!-- Syringe Barrel -->
+                <rect x="115" y="28" width="165" height="54" rx="6" fill="#f8fafc" fill-opacity="0.5" stroke="#1e293b" stroke-width="3" />
+                <!-- Liquid Water inside Barrel -->
+                <rect x="131" y="31" width="146" height="48" rx="3" fill="#38bdf8" />
+                <text x="204" y="60" text-anchor="middle" fill="#ffffff" font-family="Fredoka" font-weight="bold" font-size="14">LIQUID WATER 💧</text>
+                <!-- Tip & Finger blocking tip -->
+                <rect x="280" y="47" width="22" height="16" fill="#e2e8f0" stroke="#1e293b" stroke-width="2.5" />
+                <circle cx="314" cy="55" r="14" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5" />
+              </svg>
+            </div>
+
+            <div class="space-y-2">
+              <button onclick="squeezeSyringe('water')" class="comic-btn bg-sky-400 hover:bg-sky-500 text-slate-900 font-comic w-full py-2.5 rounded-xl text-base">
+                👉 Push Water Plunger!
+              </button>
+              <p id="water-squeeze-msg" class="text-center text-sm font-bold text-slate-700 min-h-[40px]">
+                Click the button to try compressing the water!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Volume Conclusion Banner -->
+        <div class="mt-6 bg-emerald-100 border-3 border-slate-900 rounded-2xl p-4 text-center">
+          <h4 class="font-comic font-bold text-lg sm:text-xl text-slate-900">
+            🎉 Scientific Discovery: Fixed Volume!
+          </h4>
+          <p class="text-sm sm:text-base font-bold text-slate-800 mt-1">
+            Solids and liquids <strong>cannot be compressed</strong>! We cannot reduce the space occupied by solids or liquids — so both solids and liquids have a <span class="bg-yellow-300 px-2 py-0.5 rounded border border-slate-900">fixed volume</span>!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 5: CRACK THE CASE MIND MAP (Pages 72-73)          -->
+    <!-- ========================================================= -->
+    <section id="sec-mindmap" class="hidden space-y-6 animate-pop">
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6">
+        <div class="text-center max-w-2xl mx-auto mb-6">
+          <span class="bg-yellow-300 text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+            🕵️ LESSON 4: CONSOLIDATION MIND MAP
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+            Crack the Case: Matter Summary!
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base font-semibold">
+            Review how <strong>Solids</strong>, <strong>Liquids</strong>, and <strong>Gases</strong> compare before taking the Final Quiz!
+          </p>
+        </div>
+
+        <!-- Top Matter Node -->
+        <div class="flex justify-center mb-4">
+          <div class="comic-card-sm bg-slate-900 text-yellow-300 font-comic text-2xl px-8 py-3 rounded-2xl">
+            🌟 MATTER (Can be...)
+          </div>
+        </div>
+
+        <!-- 3 Columns Mind Map -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- SOLIDS CARD -->
+          <div class="comic-card-sm bg-amber-100 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b-2 border-slate-900 pb-2">
+              <h3 class="font-comic text-2xl font-bold text-slate-900">1. SOLIDS</h3>
+              <span class="text-3xl">🧊</span>
+            </div>
+            <ul class="space-y-2 text-sm sm:text-base font-bold text-slate-800">
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ✅ <strong>Have</strong> a fixed shape
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ❌ <strong>Cannot</strong> flow
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ❌ <strong>Cannot</strong> be compressed
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ✅ <strong>Have</strong> a fixed volume
+              </li>
+            </ul>
+          </div>
+
+          <!-- LIQUIDS CARD -->
+          <div class="comic-card-sm bg-sky-100 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b-2 border-slate-900 pb-2">
+              <h3 class="font-comic text-2xl font-bold text-slate-900">2. LIQUIDS</h3>
+              <span class="text-3xl">💧</span>
+            </div>
+            <ul class="space-y-2 text-sm sm:text-base font-bold text-slate-800">
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                🔄 <strong>Do not have</strong> a fixed shape (take container's shape)
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ✅ <strong>Can</strong> flow
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ❌ <strong>Cannot</strong> be compressed
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ✅ <strong>Have</strong> a fixed volume
+              </li>
+            </ul>
+          </div>
+
+          <!-- GASES CARD -->
+          <div class="comic-card-sm bg-purple-100 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b-2 border-slate-900 pb-2">
+              <h3 class="font-comic text-2xl font-bold text-slate-900">3. GASES</h3>
+              <span class="text-3xl">💨</span>
+            </div>
+            <ul class="space-y-2 text-sm sm:text-base font-bold text-slate-800">
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                🔄 <strong>Do not have</strong> a fixed shape
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                🎈 <strong>Take the shape</strong> of the container
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                ✅ <strong>Can</strong> flow
+              </li>
+              <li class="bg-white p-2.5 rounded-xl border border-slate-900">
+                💡 Examples: Steam, Wind, Air bubbles!
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CASE CLOSED Box (Page 73) -->
+        <div class="mt-6 comic-card-sm bg-emerald-200 rounded-2xl p-5">
+          <div class="inline-block bg-slate-900 text-white font-comic px-3 py-1 rounded-lg text-sm mb-2">
+            📁 CASE CLOSED!
+          </div>
+          <h3 class="text-xl font-bold text-slate-900">
+            How can Vera win the jug competition next time?
+          </h3>
+          <p class="text-slate-800 font-bold text-sm sm:text-base mt-1">
+            ✅ <strong>Pour water to fill up the gaps between the rocks!</strong> Because water is a <strong>liquid</strong>, it can flow and take the shape of all the empty spaces between the solid rocks!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 6: SUPER FUNNY INTERACTIVE QUIZ & MINI-GAMES      -->
+    <!-- ========================================================= -->
+    <section id="sec-quiz" class="hidden space-y-6 animate-pop">
+      <!-- Quiz Header -->
+      <div class="comic-card bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-300 rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="bg-white p-2 rounded-2xl border-2 border-slate-900 shrink-0 hidden sm:flex items-center">
+            <img
+              src="Sujato andika nanda (7).png"
+              alt="IMPROVE Logo"
+              class="h-12 w-auto object-contain"
+              onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+            />
+            <span class="hidden font-comic font-extrabold text-slate-900 text-sm">↗ IMPROVE</span>
+          </div>
+          <div>
+            <span class="bg-slate-900 text-yellow-300 font-comic text-xs px-3 py-1 rounded-full">
+              🏆 FINAL CHALLENGE • MAKE BY : SUJATO ANDIKA NANDA, PC®
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+              Junior Matter Scientist Quiz!
+            </h2>
+            <p class="text-slate-800 font-bold text-sm sm:text-base">
+              Complete all 4 fun challenges below (including Word Solving!) to unlock your Official Scientist Certificate!
+            </p>
+          </div>
+        </div>
+        <button onclick="resetAllQuizzes()" class="comic-btn bg-white hover:bg-slate-100 font-comic text-sm px-4 py-2 rounded-xl shrink-0">
+          🔄 Reset Quiz
+        </button>
+      </div>
+
+      <!-- CHALLENGE 1: Match Each Material (Page 66) -->
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-slate-900">
+            🎯 Challenge 1: Match Each Material to Its State of Matter!
+          </h3>
+          <span id="match-score-badge" class="bg-sky-200 border-2 border-slate-900 font-comic text-xs sm:text-sm px-3 py-1 rounded-xl">
+            0 / 5 Matched
+          </span>
+        </div>
+        <p class="text-sm text-slate-600 font-semibold">
+          Select the correct state of matter for each item from our textbook!
+        </p>
+
+        <div id="matcher-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- CHALLENGE 2: Detective Flowchart (Page 70) -->
+      <div class="comic-card bg-indigo-50 rounded-3xl p-5 sm:p-6 space-y-4">
+        <h3 class="text-xl font-bold text-slate-900">
+          🕵️ Challenge 2: Solve the Mystery Flowchart!
+        </h3>
+        <p class="text-sm text-slate-700 font-semibold">
+          Follow the clues in the flowchart to identify unknown materials <strong>A</strong> and <strong>B</strong>!
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <!-- Flowchart Visual Diagram -->
+          <div class="bg-white rounded-2xl border-2 border-slate-900 p-4 text-center space-y-2 font-comic">
+            <div class="inline-block bg-yellow-300 border-2 border-slate-900 px-4 py-2 rounded-xl text-base">
+              Has a fixed volume
+            </div>
+            <div class="text-sm font-bold text-emerald-700">⬇ Yes</div>
+            <div class="flex items-center justify-center gap-3">
+              <div class="bg-sky-200 border-2 border-slate-900 px-4 py-2 rounded-xl text-base">
+                Has a fixed shape
+              </div>
+              <div class="text-sm font-bold text-rose-600">➔ No ➔ <span class="bg-purple-300 text-slate-900 px-3 py-1 rounded-lg border-2 border-slate-900">B</span></div>
+            </div>
+            <div class="text-sm font-bold text-emerald-700">⬇ Yes</div>
+            <div>
+              <span class="bg-amber-300 text-slate-900 px-4 py-1 rounded-lg border-2 border-slate-900 text-lg">A</span>
+            </div>
+          </div>
+
+          <!-- Flowchart Inputs -->
+          <div class="space-y-4 bg-white p-4 rounded-2xl border-2 border-slate-900">
+            <div>
+              <label class="font-comic font-bold text-slate-900 block mb-1">
+                1. Material A has a fixed volume AND a fixed shape. A is a:
+              </label>
+              <div class="flex gap-2">
+                <button onclick="checkFlowchart('A', 'Solid')" id="flow-A-Solid" class="comic-btn bg-slate-100 font-comic px-4 py-2 rounded-xl text-sm flex-1">Solid</button>
+                <button onclick="checkFlowchart('A', 'Liquid')" id="flow-A-Liquid" class="comic-btn bg-slate-100 font-comic px-4 py-2 rounded-xl text-sm flex-1">Liquid</button>
+                <button onclick="checkFlowchart('A', 'Gas')" id="flow-A-Gas" class="comic-btn bg-slate-100 font-comic px-4 py-2 rounded-xl text-sm flex-1">Gas</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="font-comic font-bold text-slate-900 block mb-1">
+                2. Material B has a fixed volume, NO fixed shape. B is a:
+              </label>
+              <div class="flex gap-2">
+                <button onclick="checkFlowchart('B', 'Solid')" id="flow-B-Solid" class="comic-btn bg-slate-100 font-comic px-4 py-2 rounded-xl text-sm flex-1">Solid</button>
+                <button onclick="checkFlowchart('B', 'Liquid')" id="flow-B-Liquid" class="comic-btn bg-slate-100 font-comic px-4 py-2 rounded-xl text-sm flex-1">Liquid</button>
+                <button onclick="checkFlowchart('B', 'Gas')" id="flow-B-Gas" class="comic-btn bg-slate-100 font-comic px-4 py-2 rounded-xl text-sm flex-1">Gas</button>
+              </div>
+            </div>
+
+            <p id="flowchart-feedback" class="text-sm font-bold text-indigo-800 min-h-[24px]"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHALLENGE 3: 8 Funny Multiple-Choice Questions -->
+      <div class="comic-card bg-white rounded-3xl p-5 sm:p-6 space-y-5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-slate-900">
+            😂 Challenge 3: Funny Science Brain-Teasers!
+          </h3>
+          <span id="mcq-progress" class="bg-emerald-200 border-2 border-slate-900 font-comic text-xs sm:text-sm px-3 py-1 rounded-xl">
+            0 / 8 Answered
+          </span>
+        </div>
+
+        <div id="mcq-container" class="space-y-5">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- CHALLENGE 4: Word Solving & Scrambled Science Words Detective -->
+      <div class="comic-card bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50 rounded-3xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="bg-emerald-400 text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900">
+              🔤 NEW BONUS WORD PUZZLE
+            </span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+              🧩 Challenge 4: Word Solving &amp; Scramble Detective!
+            </h3>
+          </div>
+          <span id="word-score-badge" class="bg-yellow-300 border-2 border-slate-900 font-comic text-xs sm:text-sm px-3 py-1 rounded-xl">
+            0 / 6 Words Solved
+          </span>
+        </div>
+        <p class="text-sm text-slate-700 font-semibold">
+          Unscramble the jumbled science clue letters or solve the missing-word riddle! Need a laugh or a nudge? Tap <strong>Hint</strong>!
+        </p>
+
+        <div id="word-puzzle-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Printable / Viewable Certificate Card -->
+      <div id="certificate-box" class="hidden comic-card bg-gradient-to-br from-yellow-100 via-amber-50 to-sky-100 rounded-3xl p-6 sm:p-8 text-center border-4 border-slate-900 space-y-4">
+        <div class="flex justify-center items-center gap-3">
+          <div class="bg-white px-3 py-1.5 rounded-2xl border-2 border-slate-900 inline-flex items-center">
+            <img
+              src="Sujato andika nanda (7).png"
+              alt="IMPROVE Logo"
+              class="h-10 w-auto object-contain"
+              onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+            />
+            <span class="hidden font-comic font-extrabold text-slate-900 text-sm">↗ IMPROVE</span>
+          </div>
+          <span class="text-4xl">🏅🎓🎉</span>
+        </div>
+        <span class="bg-emerald-400 text-slate-900 font-comic text-xs px-4 py-1 rounded-full border-2 border-slate-900">
+          OFFICIAL SCIENCE AWARD
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-slate-900">
+          Junior Matter Scientist Certificate!
+        </h2>
+        <p class="text-slate-700 font-bold text-base sm:text-lg max-w-xl mx-auto">
+          Awarded for mastering <strong>Chapter 5: Solids, Liquids and Gases</strong>, cracking the Word Solving puzzles, and helping Vera &amp; Tim solve the great jug mystery!
+        </p>
+        <div class="inline-block bg-white px-6 py-3 rounded-2xl border-2 border-slate-900 font-comic text-xl text-indigo-700">
+          Total Score: <span id="cert-score">0</span> Points ⭐
+        </div>
+        <p class="text-xs sm:text-sm font-extrabold text-slate-800 bg-white/80 inline-block px-4 py-1.5 rounded-xl border border-slate-900">
+          Make by : Sujato Andika Nanda, PC®
+        </p>
+        <div class="pt-2 flex flex-wrap justify-center gap-3">
+          <button onclick="triggerConfetti()" class="comic-btn bg-yellow-300 hover:bg-yellow-400 font-comic px-6 py-2.5 rounded-xl text-base">
+            🎊 Celebrate Again!
+          </button>
+          <button onclick="window.print()" class="comic-btn bg-sky-300 hover:bg-sky-400 font-comic px-6 py-2.5 rounded-xl text-base">
+            🖨️ Print Certificate
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-300 py-5 px-4 text-xs sm:text-sm mt-8 border-t-4 border-sky-400">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div class="flex items-center gap-3">
+        <div class="bg-white px-2.5 py-1 rounded-xl border border-slate-700 inline-flex items-center">
+          <img
+            src="Sujato andika nanda (7).png"
+            alt="IMPROVE Logo"
+            class="h-7 w-auto object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+          />
+          <span class="hidden font-comic font-extrabold text-slate-900 text-xs">↗ IMPROVE</span>
+        </div>
+        <p class="font-semibold">
+          🧪 Interactive Elementary Science Module • Chapter 5: Solids, Liquids and Gases
+        </p>
+      </div>
+      <p class="font-comic font-bold text-yellow-300">
+        Make by : Sujato Andika Nanda, PC®
+      </p>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT LOGIC                                          -->
+  <!-- ========================================================= -->
+  <script>
+    // -----------------------------------------------------------
+    // 1. GLOBAL STATE & SOUND-EFFECT POPUP HELPER
+    // -----------------------------------------------------------
+    let totalScore = 0;
+    const discoveredKitchenItems = new Set();
+
+    function addPoints(pts, sfxText) {
+      totalScore += pts;
+      document.getElementById('global-score').textContent = totalScore;
+      showSfx(sfxText);
+    }
+
+    function showSfx(text) {
+      const popup = document.getElementById('sfx-popup');
+      const badge = document.getElementById('sfx-badge');
+      badge.textContent = text;
+      popup.classList.remove('hidden');
+      badge.classList.remove('animate-pop');
+      void badge.offsetWidth; // trigger reflow
+      badge.classList.add('animate-pop');
+
+      clearTimeout(window.sfxTimer);
+      window.sfxTimer = setTimeout(() => {
+        popup.classList.add('hidden');
+      }, 1600);
+    }
+
+    // Section Navigation Switcher
+    function switchSection(sectionId) {
+      const sections = ['theater', 'kitchen', 'shapelab', 'volumelab', 'mindmap', 'quiz'];
+      sections.forEach(sec => {
+        document.getElementById('sec-' + sec).classList.add('hidden');
+        document.getElementById('tab-' + sec).classList.remove('active');
+      });
+      document.getElementById('sec-' + sectionId).classList.remove('hidden');
+      document.getElementById('tab-' + sectionId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // -----------------------------------------------------------
+    // 2. STORY THEATER LOGIC (Vera & Tim's Competition)
+    // -----------------------------------------------------------
+    const storySlides = [
+      {
+        speaker: "SCENE 1: VERA'S BIG IDEA!",
+        line1: '"Rocks are big! They should help me fill up the whole jug quickly!"',
+        line2: "Vera rushes around the garden stuffing big rocks into her jug.",
+        narration: "🎬 Scene 1 of 4: Vera fills her jug with big solid rocks thinking she'll finish super fast!",
+        showGaps: false,
+        timWaterY: 95,
+        timWaterH: 2,
+        timWin: false
+      },
+      {
+        speaker: "SCENE 2: TIM USES THE GARDEN HOSE!",
+        line1: '"Rocks have a fixed shape, Vera! Look at all those empty gaps!"',
+        line2: "Tim fills his jug with water from the garden hose instead.",
+        narration: "🎬 Scene 2 of 4: Tim realizes water is a liquid — it flows into every tiny corner with ZERO gaps!",
+        showGaps: true,
+        timWaterY: 45,
+        timWaterH: 52,
+        timWin: false
+      },
+      {
+        speaker: "SCENE 3: TIME'S UP! WHO WON?",
+        line1: '"Oh no! My rocks stacked into a heap and left air gaps everywhere!"',
+        line2: "Tim's jug is completely full to the brim without a single gap!",
+        narration: "🎬 Scene 3 of 4: Tim is declared the WINNER! Why? Because liquids flow and take the shape of the container!",
+        showGaps: true,
+        timWaterY: 14,
+        timWaterH: 83,
+        timWin: true
+      },
+      {
+        speaker: "SCENE 4: HOW CAN VERA WIN NEXT TIME?",
+        line1: '"Aha! Next time I can pour WATER into my jug to fill the gaps between the rocks!"',
+        line2: "Science saves the day! Solids + Liquids working together!",
+        narration: "🎬 Scene 4 of 4: Mystery Solved! Pouring water fills up all the empty gaps left between solid rocks!",
+        showGaps: true,
+        timWaterY: 14,
+        timWaterH: 83,
+        timWin: true
+      }
+    ];
+
+    let currentSlide = 0;
+    let autoPlayInterval = null;
+
+    function setStorySlide(index) {
+      currentSlide = index;
+      const slide = storySlides[index];
+
+      document.getElementById('bubble-speaker').textContent = slide.speaker;
+      document.getElementById('bubble-line1').textContent = slide.line1;
+      document.getElementById('bubble-line2').textContent = slide.line2;
+      document.getElementById('story-narration').textContent = slide.narration;
+
+      document.getElementById('gap-highlights').setAttribute('opacity', slide.showGaps ? '1' : '0');
+      document.getElementById('tim-water').setAttribute('y', slide.timWaterY);
+      document.getElementById('tim-water').setAttribute('height', slide.timWaterH);
+      document.getElementById('tim-win-badge').setAttribute('opacity', slide.timWin ? '1' : '0');
+
+      // Update indicator dots
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById('dot-' + i);
+        dot.classList.toggle('bg-yellow-400', i === index);
+        dot.classList.toggle('bg-white', i !== index);
+      }
+    }
+
+    function nextStorySlide() {
+      setStorySlide((currentSlide + 1) % storySlides.length);
+    }
+
+    function prevStorySlide() {
+      setStorySlide((currentSlide - 1 + storySlides.length) % storySlides.length);
+    }
+
+    function toggleStoryAutoPlay() {
+      const btn = document.getElementById('story-play-btn');
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+        btn.textContent = "▶ Auto-Play Story";
+      } else {
+        nextStorySlide();
+        autoPlayInterval = setInterval(nextStorySlide, 3200);
+        btn.textContent = "⏸ Pause Story";
+      }
+    }
+
+    // -----------------------------------------------------------
+    // 3. KITCHEN EXPLORER LOGIC
+    // -----------------------------------------------------------
+    const kitchenData = {
+      steam: {
+        state: "GAS 💨",
+        badgeColor: "bg-purple-300",
+        cardBg: "bg-purple-100",
+        emoji: "♨️",
+        title: "Steam is a GAS!",
+        desc: "Look at the hot steam rising from the soup pot! Steam has NO fixed shape and spreads out into the air.",
+        fact: "😂 Fun Fact: Steam is water in gas form — it floats right up to the ceiling!"
+      },
+      mushrooms: {
+        state: "SOLID 🧊",
+        badgeColor: "bg-amber-300",
+        cardBg: "bg-amber-100",
+        emoji: "🍄",
+        title: "Mushrooms are SOLIDS!",
+        desc: "Even though they are floating inside hot soup, the mushrooms keep their own mushroom shape!",
+        fact: "🤓 Science Clue: Solids do not change shape just because you put them in a pot!"
+      },
+      soup: {
+        state: "LIQUID 💧",
+        badgeColor: "bg-sky-300",
+        cardBg: "bg-sky-100",
+        emoji: "🍲",
+        title: "Soup is a LIQUID!",
+        desc: "Delicious soup flows easily from a ladle and takes the round shape of the cooking pot or bowl!",
+        fact: "😋 Slurp! Because soup is a liquid, you can pour it into any bowl shape!"
+      },
+      board: {
+        state: "SOLID 🧊",
+        badgeColor: "bg-amber-300",
+        cardBg: "bg-amber-100",
+        emoji: "🪵",
+        title: "Wooden Board is a SOLID!",
+        desc: "A wooden chopping board has a fixed rectangular shape and fixed volume. It definitely cannot flow!",
+        fact: "💪 Chop, chop! Hard solids keep their shape on the kitchen counter."
+      },
+      bubbles: {
+        state: "GAS 💨",
+        badgeColor: "bg-purple-300",
+        cardBg: "bg-purple-100",
+        emoji: "🫧",
+        title: "Air Bubbles are GASES!",
+        desc: "Those tiny bubbles rising inside the glass of water are trapped air — and air is a gas!",
+        fact: "🫧 Bloop, bloop! Gases are lighter than water so the bubbles race to the top!"
+      },
+      water: {
+        state: "LIQUID 💧",
+        badgeColor: "bg-sky-300",
+        cardBg: "bg-sky-100",
+        emoji: "💧",
+        title: "Water is a LIQUID!",
+        desc: "Water takes the shape of the glass it is poured into. Pour it into a mug, and it becomes mug-shaped!",
+        fact: "🌊 Splash! Water flows smoothly and has a fixed volume."
+      },
+      ice: {
+        state: "SOLID 🧊",
+        badgeColor: "bg-amber-300",
+        cardBg: "bg-amber-100",
+        emoji: "🧊",
+        title: "An Ice Cube is a SOLID!",
+        desc: "Frozen water is an ice cube! It has a fixed cube shape and stacks up with gaps in a glass.",
+        fact: "🥶 Brrr! An ice cube stays cube-shaped until it melts into liquid water!"
+      }
+    };
+
+    function inspectKitchenItem(key) {
+      const item = kitchenData[key];
+      const card = document.getElementById('kitchen-inspector-card');
+      card.className = `comic-card-sm ${item.cardBg} rounded-2xl p-5 min-h-[250px] flex flex-col justify-between animate-pop`;
+
+      const badge = document.getElementById('ki-badge');
+      badge.textContent = item.state;
+      badge.className = `${item.badgeColor} text-slate-900 font-comic text-xs px-3 py-1 rounded-full border-2 border-slate-900`;
+
+      document.getElementById('ki-emoji').textContent = item.emoji;
+      document.getElementById('ki-title').textContent = item.title;
+      document.getElementById('ki-desc').textContent = item.desc;
+      document.getElementById('ki-funfact').textContent = item.fact;
+
+      if (!discoveredKitchenItems.has(key)) {
+        discoveredKitchenItems.add(key);
+        document.getElementById('kitchen-count').textContent = discoveredKitchenItems.size;
+        addPoints(10, "DISCOVERED! +10 ⭐");
+      } else {
+        showSfx(item.emoji + " " + item.state);
+      }
+    }
+
+    // -----------------------------------------------------------
+    // 4. SHAPE & FLOW CONTAINER LAB LOGIC
+    // -----------------------------------------------------------
+    let currentLabMat = 'ice';
+    let currentLabCont = 'beaker';
+
+    function setLabMaterial(mat) {
+      currentLabMat = mat;
+      document.getElementById('btn-mat-ice').classList.toggle('bg-amber-300', mat === 'ice');
+      document.getElementById('btn-mat-ice').classList.toggle('bg-white', mat !== 'ice');
+      document.getElementById('btn-mat-water').classList.toggle('bg-sky-300', mat === 'water');
+      document.getElementById('btn-mat-water').classList.toggle('bg-white', mat !== 'water');
+      updateContainerLab();
+    }
+
+    function setLabContainer(cont) {
+      currentLabCont = cont;
+      ['beaker', 'flask', 'tilted'].forEach(c => {
+        const btn = document.getElementById('btn-cont-' + c);
+        btn.classList.toggle('bg-sky-300', c === cont);
+        btn.classList.toggle('bg-white', c !== cont);
+        document.getElementById('view-' + c).classList.toggle('hidden', c !== cont);
+      });
+      updateContainerLab();
+    }
+
+    function updateContainerLab() {
+      // Toggle ice vs water inside all 3 container views
+      ['beaker', 'flask', 'tilted'].forEach(c => {
+        document.getElementById(`${c}-ice`).classList.toggle('hidden', currentLabMat !== 'ice');
+        document.getElementById(`${c}-water`).classList.toggle('hidden', currentLabMat !== 'water');
+      });
+
+      const obsText = document.getElementById('lab-obs-text');
+      if (currentLabMat === 'ice') {
+        if (currentLabCont === 'beaker') {
+          obsText.innerHTML = "Ice cubes keep their <strong>cube shape</strong>! They stack on top of each other to form a <strong>heap</strong>, leaving gaps in the beaker. Solids <strong>cannot flow</strong>!";
+        } else if (currentLabCont === 'flask') {
+          obsText.innerHTML = "Even inside a cone-shaped flask, ice cubes stay <strong>cube-shaped</strong>! They do NOT take the shape of the flask.";
+        } else {
+          obsText.innerHTML = "When you tilt the glass, the solid ice cubes stay rigid and tilt along with the glass — they <strong>cannot flow</strong>!";
+        }
+      } else {
+        if (currentLabCont === 'beaker') {
+          obsText.innerHTML = "Water <strong>flows</strong> smoothly and takes the exact shape of the tall beaker with <strong>NO gaps</strong>!";
+        } else if (currentLabCont === 'flask') {
+          obsText.innerHTML = "Pour water into a cone flask and it spreads out to take the <strong>cone shape</strong>! Liquids do <strong>not</strong> have a fixed shape.";
+        } else {
+          obsText.innerHTML = "Look closely! When you tilt a glass of water, the water flows so its top surface <strong>always stays flat (horizontal)</strong>!";
+        }
+      }
+      showSfx(currentLabMat === 'ice' ? "CLINK! 🧊" : "SPLASH! 💧");
+    }
+
+    function revealBreadAnswer() {
+      document.getElementById('bread-ans').classList.remove('hidden');
+      document.getElementById('bread-btn').disabled = true;
+      document.getElementById('bread-btn').textContent = "Answered! ✅";
+      addPoints(15, "SMART! +15 ⭐");
+    }
+
+    // -----------------------------------------------------------
+    // 5. SYRINGE SQUEEZE LAB LOGIC
+    // -----------------------------------------------------------
+    function squeezeSyringe(type) {
+      const plunger = document.getElementById('plunger-' + type);
+      const msg = document.getElementById(type + '-squeeze-msg');
+
+      // Tiny shake/nudge animation showing it refuses to compress!
+      plunger.style.transition = "transform 0.15s ease";
+      plunger.style.transform = "translateX(5px)";
+      setTimeout(() => {
+        plunger.style.transform = "translateX(0px)";
+      }, 180);
+
+      if (type === 'ice') {
+        msg.innerHTML = "😤 <strong>OOF! Won't budge!</strong> The volume of solid ice does <strong>NOT</strong> change. Solids cannot be compressed!";
+        showSfx("BOING! WON'T BUDGE! 💪");
+      } else {
+        msg.innerHTML = "💦 <strong>NOPE! Stuck solid!</strong> Even though water is a liquid, its volume does <strong>NOT</strong> change when squeezed. Liquids have a fixed volume!";
+        showSfx("SQUEEZE FAIL! 🚫");
+      }
+    }
+
+    // -----------------------------------------------------------
+    // 6. INTERACTIVE QUIZ & MINI-GAMES LOGIC
+    // -----------------------------------------------------------
+    // Part A: Material Matcher Data (Page 66 + Bread & Steam)
+    const matcherItems = [
+      { id: 'm1', name: 'Wooden Table', emoji: '🪑', answer: 'Solid' },
+      { id: 'm2', name: 'Wind from a Fan', emoji: '🌬️', answer: 'Gas' },
+      { id: 'm3', name: 'Carton of Milk', emoji: '🥛', answer: 'Liquid' },
+      { id: 'm4', name: 'Soft Bread Loaf', emoji: '🍞', answer: 'Solid' },
+      { id: 'm5', name: 'Kettle Steam', emoji: '♨️', answer: 'Gas' }
+    ];
+    let matchedCount = 0;
+
+    function renderMatcher() {
+      const grid = document.getElementById('matcher-grid');
+      grid.innerHTML = matcherItems.map(item => `
+        <div id="card-${item.id}" class="comic-card-sm bg-slate-50 rounded-2xl p-4 text-center flex flex-col justify-between space-y-3">
+          <div>
+            <div class="text-4xl mb-1">${item.emoji}</div>
+            <h4 class="font-comic font-bold text-slate-900 text-base">${item.name}</h4>
+          </div>
+          <div class="space-y-1.5" id="btns-${item.id}">
+            ${['Solid', 'Liquid', 'Gas'].map(opt => `
+              <button onclick="checkMatch('${item.id}', '${opt}')" class="comic-btn bg-white hover:bg-yellow-200 font-comic text-xs w-full py-1.5 rounded-lg">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div id="res-${item.id}" class="hidden font-comic text-sm font-bold py-1.5 rounded-lg"></div>
+        </div>
+      `).join('');
+    }
+
+    function checkMatch(id, choice) {
+      const item = matcherItems.find(x => x.id === id);
+      const card = document.getElementById('card-' + id);
+      const res = document.getElementById('res-' + id);
+      const btns = document.getElementById('btns-' + id);
+
+      if (choice === item.answer) {
+        btns.classList.add('hidden');
+        res.classList.remove('hidden');
+        res.className = "font-comic text-sm font-bold py-1.5 px-2 rounded-lg bg-emerald-300 text-slate-900 border border-slate-900";
+        res.textContent = `✅ ${item.answer}!`;
+        card.classList.replace('bg-slate-50', 'bg-emerald-50');
+        matchedCount++;
+        document.getElementById('match-score-badge').textContent = `${matchedCount} / 5 Matched`;
+        addPoints(15, "MATCHED! +15 ⭐");
+        checkAllChallengesComplete();
+      } else {
+        card.classList.add('animate-wobble');
+        setTimeout(() => card.classList.remove('animate-wobble'), 400);
+        showSfx("OOPS! TRY AGAIN! 😜");
+      }
+    }
+
+    // Part B: Flowchart Challenge
+    const flowSolved = { A: false, B: false };
+
+    function checkFlowchart(letter, choice) {
+      const feedback = document.getElementById('flowchart-feedback');
+      const expected = letter === 'A' ? 'Solid' : 'Liquid';
+
+      if (choice === expected) {
+        flowSolved[letter] = true;
+        ['Solid', 'Liquid', 'Gas'].forEach(opt => {
+          const btn = document.getElementById(`flow-${letter}-${opt}`);
+          btn.disabled = true;
+          if (opt === expected) {
+            btn.classList.replace('bg-slate-100', 'bg-emerald-300');
+          }
+        });
+        feedback.textContent = `✅ Awesome! Material ${letter} is a ${expected}!`;
+        addPoints(20, "DETECTIVE! +20 ⭐");
+        checkAllChallengesComplete();
+      } else {
+        feedback.textContent = `🤔 Hint: Check whether ${letter} has a fixed shape or not!`;
+        showSfx("NOT QUITE! 🕵️");
+      }
+    }
+
+    // Part C: 8 Funny Multiple-Choice Questions
+    const mcqQuestions = [
+      {
+        q: "1. What is 'matter'?",
+        options: [
+          "Only things that are super heavy like elephants 🐘",
+          "Anything that has mass and occupies (takes up) space 🌍",
+          "Only liquids that you can drink 🧃"
+        ],
+        correct: 1,
+        funnyRight: "Spot on! Even invisible air is matter because it takes up space!",
+        funnyWrong: "Not just elephants! Everything with mass that takes up space is matter."
+      },
+      {
+        q: "2. Why did Vera lose the jug-filling competition to Tim?",
+        options: [
+          "Her rocks stacked into a heap and left empty gaps between them 🪨",
+          "Her rocks melted into soup 🍲",
+          "Tim had a magic invisible jug ✨"
+        ],
+        correct: 0,
+        funnyRight: "Bingo! Solid rocks have a fixed shape so they leave gaps!",
+        funnyWrong: "Rocks don't melt in the garden! They left gaps because solids have a fixed shape."
+      },
+      {
+        q: "3. Which of these is a GAS?",
+        options: [
+          "Mushrooms in the soup 🍄",
+          "A wooden chopping board 🪵",
+          "Air bubbles rising in water 🫧"
+        ],
+        correct: 2,
+        funnyRight: "Bloop bloop! Those bubbles are trapped air (a gas)!",
+        funnyWrong: "Mushrooms and wood are solids. Look for the bubbly gas!"
+      },
+      {
+        q: "4. Ada put a soft loaf of bread into a round bowl. Why is bread still a SOLID?",
+        options: [
+          "Because bread tastes yummy with jam 🍓",
+          "Because bread keeps its shape without force and cannot flow 🍞",
+          "Because bread is a liquid in disguise 🥸"
+        ],
+        correct: 1,
+        funnyRight: "Yes! Soft solids still keep their shape and cannot flow!",
+        funnyWrong: "Even though jam is yummy, bread is a solid because it keeps its shape and doesn't flow!"
+      },
+      {
+        q: "5. What happens when you tilt a glass of water to the right?",
+        options: [
+          "The water freezes instantly into an ice cube 🧊",
+          "The water flows so its surface stays flat and horizontal ↔️",
+          "The water stands straight up like a tower 🗼"
+        ],
+        correct: 1,
+        funnyRight: "Gravity + Liquid Flow = A flat horizontal water surface every time!",
+        funnyWrong: "Water doesn't stand like a tower — it flows to stay flat!"
+      },
+      {
+        q: "6. In the syringe experiment, why couldn't you push the plunger in on water or ice?",
+        options: [
+          "Because solids and liquids have a FIXED VOLUME and cannot be compressed 💪",
+          "Because the syringe was glued shut 🧪",
+          "Because water is afraid of fingers 👆"
+        ],
+        correct: 0,
+        funnyRight: "Super scientist! Neither solids nor liquids can be compressed!",
+        funnyWrong: "No glue involved! Solids and liquids have a fixed volume so you can't squeeze them smaller."
+      },
+      {
+        q: "7. Which property is TRUE for Liquids, but FALSE for Solids?",
+        options: [
+          "Has a fixed volume",
+          "Cannot be compressed",
+          "Can flow and takes the shape of its container 💧"
+        ],
+        correct: 2,
+        funnyRight: "Splash-tastic! Liquids flow and copy their container's shape!",
+        funnyWrong: "Both solids and liquids have a fixed volume and can't be compressed. Only liquids flow!"
+      },
+      {
+        q: "8. How can Vera win the jug competition next time using science?",
+        options: [
+          "Smash the jug with a hammer 🔨",
+          "Pour water into the jug to fill up all the gaps between the rocks! 💦",
+          "Put marshmallows on top of the rocks 🍡"
+        ],
+        correct: 1,
+        funnyRight: "CASE CLOSED! Water flows into every gap between the rocks!",
+        funnyWrong: "Don't break the jug! Pouring liquid water fills up all the empty spaces between the rocks."
+      }
+    ];
+
+    let mcqAnsweredCount = 0;
+
+    function renderMcqs() {
+      const container = document.getElementById('mcq-container');
+      container.innerHTML = mcqQuestions.map((item, qIdx) => `
+        <div id="qbox-${qIdx}" class="comic-card-sm bg-slate-50 rounded-2xl p-4 sm:p-5 space-y-3">
+          <h4 class="font-comic font-bold text-base sm:text-lg text-slate-900">${item.q}</h4>
+          <div class="grid grid-cols-1 gap-2">
+            ${item.options.map((opt, oIdx) => `
+              <button onclick="answerMcq(${qIdx}, ${oIdx})" id="qbtn-${qIdx}-${oIdx}" class="comic-btn bg-white hover:bg-sky-100 text-left font-bold text-sm sm:text-base px-4 py-2.5 rounded-xl">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div id="qfb-${qIdx}" class="hidden text-sm font-bold p-3 rounded-xl border-2 border-slate-900"></div>
+        </div>
+      `).join('');
+    }
+
+    function answerMcq(qIdx, oIdx) {
+      const item = mcqQuestions[qIdx];
+      const fb = document.getElementById(`qfb-${qIdx}`);
+      const qbox = document.getElementById(`qbox-${qIdx}`);
+
+      // Disable all buttons for this question
+      item.options.forEach((_, idx) => {
+        const btn = document.getElementById(`qbtn-${qIdx}-${idx}`);
+        btn.disabled = true;
+        if (idx === item.correct) {
+          btn.classList.replace('bg-white', 'bg-emerald-300');
+        } else if (idx === oIdx) {
+          btn.classList.replace('bg-white', 'bg-rose-300');
+        }
+      });
+
+      fb.classList.remove('hidden');
+      if (oIdx === item.correct) {
+        fb.className = "text-sm font-bold p-3 rounded-xl border-2 border-slate-900 bg-emerald-100 text-emerald-900";
+        fb.textContent = "🎉 " + item.funnyRight;
+        addPoints(15, "WOOHOO! +15 ⭐");
+      } else {
+        fb.className = "text-sm font-bold p-3 rounded-xl border-2 border-slate-900 bg-amber-100 text-slate-900";
+        fb.textContent = "💡 " + item.funnyWrong;
+        qbox.classList.add('animate-wobble');
+        showSfx("NICE TRY! 💡");
+      }
+
+      mcqAnsweredCount++;
+      document.getElementById('mcq-progress').textContent = `${mcqAnsweredCount} / 8 Answered`;
+      checkAllChallengesComplete();
+    }
+
+    function checkAllChallengesComplete() {
+      if (
+        matchedCount === 5 &&
+        flowSolved.A &&
+        flowSolved.B &&
+        mcqAnsweredCount === 8 &&
+        wordSolvedCount === wordPuzzles.length
+      ) {
+        const cert = document.getElementById('certificate-box');
+        cert.classList.remove('hidden');
+        document.getElementById('cert-score').textContent = totalScore;
+        triggerConfetti();
+        setTimeout(() => {
+          cert.scrollIntoView({ behavior: 'smooth' });
+        }, 400);
+      }
+    }
+
+    // -----------------------------------------------------------
+    // 6D. WORD SOLVING & SCRAMBLE DETECTIVE CHALLENGE
+    // -----------------------------------------------------------
+    const wordPuzzles = [
+      {
+        id: 'w1',
+        scrambled: 'L O S D I',
+        clue: 'I keep my own fixed shape and stack into a heap with gaps. (1 word)',
+        hint: 'Starts with S — like an ice cube or a wooden table! 🧊',
+        answer: 'SOLID',
+        funnyWin: 'Rock-solid answer! A SOLID keeps its fixed shape!'
+      },
+      {
+        id: 'w2',
+        scrambled: 'Q U D I L I',
+        clue: 'I have NO fixed shape, can flow, and fill the gaps between rocks! (1 word)',
+        hint: 'Starts with L — Tim used me from the garden hose to win! 💧',
+        answer: 'LIQUID',
+        funnyWin: 'Splash-tastic! A LIQUID flows and takes the shape of its container!'
+      },
+      {
+        id: 'w3',
+        scrambled: 'S A G',
+        clue: 'I rise as steam from hot soup or float up as bubbles in water! (1 word)',
+        hint: 'Starts with G — invisible air is one too! 💨',
+        answer: 'GAS',
+        funnyWin: 'Whoosh! A GAS has no fixed shape and spreads into space!'
+      },
+      {
+        id: 'w4',
+        scrambled: 'L O V U M E',
+        clue: 'The amount of space an object occupies. Solids & liquids have a fixed one! (1 word)',
+        hint: 'Starts with V — you tried to shrink it with a syringe plunger! 💉',
+        answer: 'VOLUME',
+        funnyWin: 'Big brain energy! VOLUME is the space matter takes up!'
+      },
+      {
+        id: 'w5',
+        scrambled: 'C O M P R E S S',
+        clue: 'To squeeze something to reduce its volume. Solids & liquids cannot do this! (1 word)',
+        hint: 'Starts with C — pushing the syringe plunger hard! 💪',
+        answer: 'COMPRESS',
+        funnyWin: 'No squeezing allowed! Neither ice nor water can be COMPRESSED!'
+      },
+      {
+        id: 'w6',
+        scrambled: 'H E A P',
+        clue: 'A pile of something formed when solids stack on top of one another! (1 word)',
+        hint: 'Starts with H — like a pile of pebbles or rocks! 🪨',
+        answer: 'HEAP',
+        funnyWin: 'Piled up nicely! Solids stack together to form a HEAP!'
+      }
+    ];
+
+    let wordSolvedCount = 0;
+
+    function renderWordPuzzles() {
+      const container = document.getElementById('word-puzzle-container');
+      container.innerHTML = wordPuzzles.map((p, idx) => `
+        <div id="wbox-${p.id}" class="comic-card-sm bg-white rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <span class="bg-indigo-100 text-indigo-900 font-comic text-xs px-2.5 py-1 rounded-full border border-slate-900">
+              Word Clue #${idx + 1}
+            </span>
+            <span class="font-comic text-sm sm:text-base tracking-widest bg-amber-200 px-3 py-1 rounded-xl border-2 border-slate-900">
+              ${p.scrambled}
+            </span>
+          </div>
+
+          <p class="text-sm font-bold text-slate-800">${p.clue}</p>
+
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              id="winput-${p.id}"
+              placeholder="Type your word here..."
+              onkeydown="if(event.key==='Enter') checkWordPuzzle('${p.id}')"
+              class="flex-1 px-3 py-2 rounded-xl border-2 border-slate-900 font-bold text-sm uppercase focus:outline-none focus:ring-2 focus:ring-sky-400"
+            />
+            <button onclick="checkWordPuzzle('${p.id}')" id="wbtn-${p.id}" class="comic-btn bg-emerald-400 hover:bg-emerald-500 font-comic text-xs sm:text-sm px-4 py-2 rounded-xl">
+              Check ✓
+            </button>
+            <button onclick="showWordHint('${p.id}')" class="comic-btn bg-yellow-200 hover:bg-yellow-300 font-comic text-xs px-3 py-2 rounded-xl">
+              💡 Hint
+            </button>
+          </div>
+
+          <p id="whint-${p.id}" class="hidden text-xs font-bold text-amber-800 bg-amber-50 p-2 rounded-lg border border-amber-300"></p>
+          <p id="wfb-${p.id}" class="hidden text-xs sm:text-sm font-bold p-2.5 rounded-xl border-2 border-slate-900"></p>
+        </div>
+      `).join('');
+    }
+
+    function showWordHint(id) {
+      const puzzle = wordPuzzles.find(w => w.id === id);
+      const hintEl = document.getElementById(`whint-${id}`);
+      hintEl.textContent = "💡 Clue: " + puzzle.hint;
+      hintEl.classList.remove('hidden');
+      showSfx("HINT UNLOCKED! 💡");
+    }
+
+    function checkWordPuzzle(id) {
+      const puzzle = wordPuzzles.find(w => w.id === id);
+      const inputEl = document.getElementById(`winput-${id}`);
+      const fbEl = document.getElementById(`wfb-${id}`);
+      const btnEl = document.getElementById(`wbtn-${id}`);
+      const boxEl = document.getElementById(`wbox-${id}`);
+
+      if (inputEl.disabled) return;
+
+      const userGuess = inputEl.value.trim().toUpperCase().replace(/\s+/g, '');
+      fbEl.classList.remove('hidden');
+
+      if (userGuess === puzzle.answer) {
+        inputEl.disabled = true;
+        btnEl.disabled = true;
+        inputEl.value = puzzle.answer;
+        boxEl.classList.replace('bg-white', 'bg-emerald-50');
+        fbEl.className = "text-xs sm:text-sm font-bold p-2.5 rounded-xl border-2 border-slate-900 bg-emerald-200 text-emerald-950";
+        fbEl.textContent = `🎉 ${puzzle.funnyWin} (${puzzle.answer})`;
+        wordSolvedCount++;
+        document.getElementById('word-score-badge').textContent = `${wordSolvedCount} / ${wordPuzzles.length} Words Solved`;
+        addPoints(20, "WORD SOLVED! +20 ⭐");
+        checkAllChallengesComplete();
+      } else {
+        fbEl.className = "text-xs sm:text-sm font-bold p-2.5 rounded-xl border-2 border-slate-900 bg-rose-100 text-rose-900";
+        fbEl.textContent = "😜 Not quite! Check your spelling or tap 💡 Hint!";
+        boxEl.classList.add('animate-wobble');
+        setTimeout(() => boxEl.classList.remove('animate-wobble'), 400);
+        showSfx("TRY AGAIN! 🔤");
+      }
+    }
+
+    function resetAllQuizzes() {
+      matchedCount = 0;
+      flowSolved.A = false;
+      flowSolved.B = false;
+      mcqAnsweredCount = 0;
+      wordSolvedCount = 0;
+
+      document.getElementById('match-score-badge').textContent = "0 / 5 Matched";
+      document.getElementById('mcq-progress').textContent = "0 / 8 Answered";
+      document.getElementById('word-score-badge').textContent = `0 / ${wordPuzzles.length} Words Solved`;
+      document.getElementById('flowchart-feedback').textContent = "";
+      document.getElementById('certificate-box').classList.add('hidden');
+
+      ['A', 'B'].forEach(letter => {
+        ['Solid', 'Liquid', 'Gas'].forEach(opt => {
+          const btn = document.getElementById(`flow-${letter}-${opt}`);
+          btn.disabled = false;
+          btn.classList.remove('bg-emerald-300');
+          btn.classList.add('bg-slate-100');
+        });
+      });
+
+      renderMatcher();
+      renderMcqs();
+      renderWordPuzzles();
+      showSfx("QUIZ RESET! 🔄");
+    }
+
+    // -----------------------------------------------------------
+    // 7. CONFETTI CELEBRATION EFFECT
+    // -----------------------------------------------------------
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#facc15', '#38bdf8', '#f43f5e', '#4ade80', '#c084fc'];
+      const pieces = Array.from({ length: 90 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: Math.random() * 10 + 6,
+        h: Math.random() * 10 + 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vy: Math.random() * 4 + 2,
+        vx: Math.random() * 2 - 1,
+        rot: Math.random() * 360
+      }));
+
+      let frames = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.y += p.vy;
+          p.x += p.vx;
+          p.rot += 4;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        frames++;
+        if (frames < 140) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      draw();
+    }
+
+    // Initialize Interactive Elements on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      setStorySlide(0);
+      renderMatcher();
+      renderMcqs();
+      renderWordPuzzles();
+    });
+  </script>
+</body>
+</html>
